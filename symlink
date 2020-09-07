@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+import sys
+import os.path
+import shutil
+
+
+def get_confirmation(question):
+    yes = {'yes', 'y'}
+
+    response = input(question).lower()
+
+    if response in yes:
+        return True
+    else:
+        print("Program execution completed")
+        exit(0)
+
+
+count_args = len(sys.argv)
+
+if count_args == 3:
+    file_name = sys.argv[1]
+    link_name = sys.argv[2]
+
+    check_file = os.path.exists(file_name)
+    check_link = os.path.exists(link_name)
+
+    if check_file:
+        if check_link:
+            if os.path.islink(link_name):
+                get_confirmation("Do you want to update the link? ")
+                os.unlink(link_name)
+            elif os.path.isdir(link_name):
+                get_confirmation("Do you want to delete a folder? ")
+                shutil.rmtree(link_name)
+            elif os.path.isfile(link_name):
+                get_confirmation("Do you want to delete the file? ")
+                os.remove(link_name)
+        os.symlink(file_name, link_name)
+    else:
+        print("Source file does not exist")
+else:
+    print("Invalid number of arguments [", count_args - 1, "]")
