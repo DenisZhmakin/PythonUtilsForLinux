@@ -1,0 +1,26 @@
+#!/usr/bin/env python3
+import sys
+import subprocess
+from os.path import exists, isfile
+
+LINUX_ARCHIVES = ['tar.gz', 'tar.xz', 'tar.bz2', 'tgz', 'txz', 'tbz2', 'tar']
+WINDOWS_ARCHIVES = ['7z', 'zip', 'rar', 'arj']
+
+count_args = len(sys.argv)
+
+if count_args == 2:
+    file = sys.argv[1]
+
+    if exists(file) and isfile(file):
+        for suffix in LINUX_ARCHIVES:
+            if file.endswith(suffix):
+                subprocess.run(['tar', 'xvf', file])
+
+        for suffix in WINDOWS_ARCHIVES:
+            if file.endswith(suffix):
+                subprocess.run(['7z', 'x', file])
+    else:
+        print('The archive does not exist')
+        exit(0)
+else:
+    print(f'Invalid count of arguments [{count_args - 1}]')
