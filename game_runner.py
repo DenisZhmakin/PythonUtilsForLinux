@@ -14,8 +14,7 @@ if __name__ == '__main__':
     process.communicate()
     if not process.returncode:
         if MANGOHUD_OPENGL:
-            # subprocess.run(['', ' mangohud', 'wine', GAME_PATH])
-            os.system(f'env MANGOHUD_DLSYM=1 mangohud wine {GAME_PATH}')
+            subprocess.run(['mangohud', '--dlsym', 'wine', GAME_PATH])
         else:
             subprocess.run(['mangohud', 'wine', GAME_PATH])
     else:
